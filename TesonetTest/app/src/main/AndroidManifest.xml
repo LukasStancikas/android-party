@@ -4,7 +4,7 @@
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<application
-		android:name="lt.topocentras.android.App"
+		android:name="com.example.lukas.tesonettest.App"
 		android:allowBackup="true"
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name"
@@ -13,6 +13,7 @@
 		android:theme="@style/AppTheme">
 		<activity
 			android:name=".activity.MainActivity"
+			android:configChanges="orientation|screenSize"
 			android:windowSoftInputMode="adjustResize">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>

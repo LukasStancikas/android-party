@@ -1,5 +1,6 @@
 package com.example.lukas.tesonettest.activity
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -8,7 +9,7 @@ import com.example.lukas.tesonettest.R
 import com.example.lukas.tesonettest.UnauthorizedEvent
 import com.example.lukas.tesonettest.fragment.BaseFragment
 import com.example.lukas.tesonettest.fragment.LoginFragment
-import lt.topocentras.android.Prefs
+import com.example.lukas.tesonettest.util.Prefs
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -44,6 +45,11 @@ class MainActivity : AppCompatActivity() {
 		ft.commit()
 	}
 
+	fun logout() {
+		Prefs.authorization = null
+		changeFragment(LoginFragment.getInstance(),false)
+	}
+
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	fun onEvent(event: UnauthorizedEvent) {
 		Prefs.authorization = null
@@ -53,5 +59,4 @@ class MainActivity : AppCompatActivity() {
 	fun onEvent(event: GlobalErrorEvent) {
 		Toast.makeText(this, event.error, Toast.LENGTH_SHORT).show()
 	}
-
 }

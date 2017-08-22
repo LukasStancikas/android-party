@@ -31,7 +31,7 @@
 				style="@style/AppTheme.Login_EditText_Image"
 				android:src="@drawable/ic_username"/>
 
-			<EditText
+			<com.example.lukas.tesonettest.custom.NotEmptyEditText
 				android:id="@+id/login_username"
 				style="@style/AppTheme.Login_EditText"
 				android:hint="@string/username"
@@ -46,7 +46,7 @@
 				style="@style/AppTheme.Login_EditText_Image"
 				android:src="@drawable/ic_lock"/>
 
-			<EditText
+			<com.example.lukas.tesonettest.custom.NotEmptyEditText
 				android:id="@+id/login_password"
 				style="@style/AppTheme.Login_EditText"
 				android:hint="@string/password"
@@ -65,7 +65,7 @@
 		android:layout_height="match_parent"
 		android:visibility="gone">
 
-		<lt.mediapark.driveadvice.custom.ColoredProgressBar
+		<com.example.lukas.tesonettest.custom.ColoredProgressBar
 			android:id="@+id/login_progress"
 			android:layout_width="150dp"
 			android:layout_height="150dp"

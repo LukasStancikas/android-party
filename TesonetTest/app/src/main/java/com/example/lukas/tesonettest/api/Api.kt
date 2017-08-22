@@ -1,13 +1,10 @@
-package lt.topocentras.android.api
+package com.example.lukas.tesonettest.api
 
 import android.content.Context
 import com.example.lukas.tesonettest.BuildConfig
 import com.example.lukas.tesonettest.UnauthorizedEvent
-import com.example.lukas.tesonettest.api.AppService
-import com.example.lukas.tesonettest.api.RxErrorCallAdapterFactory
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import lt.topocentras.android.Prefs
+import com.example.lukas.tesonettest.util.Prefs
+import com.example.lukas.tesonettest.util.gson
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -17,20 +14,13 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
-import java.lang.reflect.Modifier
 import java.util.concurrent.TimeUnit
 
 object Api {
 	val BASE_URL = BuildConfig.BASE_API_URL
 	lateinit var context: Context
 	private val TIMEOUT = 30L
-	val gson: Gson by lazy {
 
-		val builder = GsonBuilder()
-		builder.excludeFieldsWithModifiers(Modifier.TRANSIENT)
-		builder.excludeFieldsWithModifiers(Modifier.STATIC)
-		builder.create()
-	}
 
 	val appService: AppService by lazy {
 		Api.retrofit.create(AppService::class.java)

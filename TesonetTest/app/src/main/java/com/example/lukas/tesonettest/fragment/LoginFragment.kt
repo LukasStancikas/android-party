@@ -15,7 +15,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_login.*
-import lt.topocentras.android.Prefs
+import com.example.lukas.tesonettest.util.Prefs
 import java.util.concurrent.TimeUnit
 
 
@@ -25,13 +25,11 @@ import java.util.concurrent.TimeUnit
 class LoginFragment : BaseFragment() {
 	companion object {
 		fun getInstance(): LoginFragment {
-			val fragment = LoginFragment()
-			return fragment
+			return LoginFragment()
 		}
 	}
 
-	override val layoutId: Int
-		get() = R.layout.fragment_login
+	override val layoutId  = R.layout.fragment_login
 
 
 	override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -47,21 +45,21 @@ class LoginFragment : BaseFragment() {
 				               BiFunction { u, p -> u.isNotEmpty() && p.isNotEmpty() })
 		isSignInEnabled.subscribe { login_button.isEnabled = it }
 		buttonObservable.subscribe(this::onLoginClick)
-		if (Prefs.authorization != null){
+		if (Prefs.authorization != null) {
 			fetchServers()
 		}
 	}
 
-	fun setupFields() {
+	private fun setupFields() {
 		login_button.isEnabled = false
 		login_password.typeface = Typeface.DEFAULT
 		login_password.transformationMethod = PasswordTransformationMethod()
 	}
 
-	fun onLoginClick(t: Any) {
+	private fun onLoginClick(t: Any) {
 		Login(login_username.text.toString(), login_password.text.toString())
 				.login()
-				.delay(2000L,TimeUnit.MILLISECONDS)
+				.delay(2000L, TimeUnit.MILLISECONDS)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.doOnSubscribe {
@@ -78,10 +76,10 @@ class LoginFragment : BaseFragment() {
 				.addTo(disposable)
 	}
 
-	fun fetchServers() {
+	private fun fetchServers() {
 		Server.getServers()
 				//delay to make the progress visible
-				.delay(2000L,TimeUnit.MILLISECONDS)
+				.delay(2000L, TimeUnit.MILLISECONDS)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.doOnSubscribe {
@@ -97,13 +95,13 @@ class LoginFragment : BaseFragment() {
 				.addTo(disposable)
 	}
 
-	fun showProgress(show: Boolean) {
+	private fun showProgress(show: Boolean) {
 		login_logo.visibility = if (show) View.GONE else View.VISIBLE
 		login_container.visibility = if (show) View.GONE else View.VISIBLE
 		login_progress_container.visibility = if (show) View.VISIBLE else View.GONE
 	}
 
-	fun setLoadingText(resId: Int) {
+	private fun setLoadingText(resId: Int) {
 		login_progress_text.text = getString(resId)
 	}
 }

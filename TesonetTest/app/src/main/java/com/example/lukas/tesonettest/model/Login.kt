@@ -1,7 +1,7 @@
 package com.example.lukas.tesonettest.model
 
 import io.reactivex.Observable
-import lt.topocentras.android.api.Api
+import com.example.lukas.tesonettest.api.Api
 
 /**
  * Created by lukas on 17.8.17.

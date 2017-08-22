@@ -1,4 +1,4 @@
-package lt.mediapark.driveadvice.custom
+package com.example.lukas.tesonettest.custom
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -11,7 +11,7 @@ import com.example.lukas.tesonettest.R
 
 
 /**
- * Created by mediapark on 18/04/16.
+ * Created by lukas on 18/04/16.
  */
 class ColoredProgressBar : ProgressBar {
     private var progressColor: Int = 0
@@ -35,7 +35,7 @@ class ColoredProgressBar : ProgressBar {
         init(context, attrs)
     }
 
-    internal fun init(context: Context, attrs: AttributeSet?) {
+    private fun init(context: Context, attrs: AttributeSet?) {
         val a = context.theme.obtainStyledAttributes(attrs,
                                                      R.styleable.ColoredProgressBar, 0, 0)
         try {

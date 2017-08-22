@@ -1,10 +1,11 @@
-package lt.topocentras.android
+package com.example.lukas.tesonettest
 
 import android.app.Application
-import lt.topocentras.android.api.Api
+import com.example.lukas.tesonettest.api.Api
+import com.example.lukas.tesonettest.util.Prefs
 
 /**
- * Created by marius on 17.2.10.
+ * Created by lukas on 17.2.10.
  */
 class App : Application() {
 	override fun onCreate() {

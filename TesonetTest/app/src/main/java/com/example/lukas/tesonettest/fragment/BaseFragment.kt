@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.lukas.tesonettest.activity.MainActivity
 import io.reactivex.disposables.CompositeDisposable
-import lt.topocentras.android.Prefs
 
 /**
  * Created by lukas on 17.8.17.
@@ -25,10 +24,6 @@ abstract class BaseFragment : Fragment() {
 		if (activity is MainActivity) {
 			(activity as MainActivity).changeFragment(fragment, addToBackStack)
 		}
-	}
-	protected fun logout() {
-		Prefs.authorization = null
-		changeFragment(LoginFragment.getInstance(),false)
 	}
 
 	val disposable by lazy {

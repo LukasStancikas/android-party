@@ -26,6 +26,10 @@ android {
             buildConfigField 'boolean', 'IS_DEVELOPMENT', 'true'
         }
     }
+    androidExtensions {
+        experimental = true
+    }
+
 }
 
 dependencies {

@@ -4,35 +4,36 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.view.View
 import com.example.lukas.tesonettest.R
+import com.example.lukas.tesonettest.activity.MainActivity
 import com.example.lukas.tesonettest.custom.ServerListAdapter
 import com.example.lukas.tesonettest.model.Server
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_server_list.*
-import lt.topocentras.android.api.Api
+import com.example.lukas.tesonettest.api.Api
+import com.example.lukas.tesonettest.util.gson
 
 
 /**
  * Created by lukas on 17.8.17.
  */
 class ServerListFragment : BaseFragment() {
-
 	companion object {
+		private val LIST = "list"
+
 		fun getInstance(servers: List<Server>): ServerListFragment {
 			val fragment = ServerListFragment()
 			val bundle = Bundle()
-			bundle.putString("list", Api.gson.toJson(servers, object : TypeToken<List<Server>>() {}.type))
+			bundle.putParcelableArrayList(LIST, ArrayList(servers))
 			fragment.arguments = bundle
 			return fragment
 		}
 	}
 
-	override val layoutId: Int
-		get() = R.layout.fragment_server_list
+	override val layoutId = R.layout.fragment_server_list
 
 	override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		val serverJson = arguments.getString("list")
-		val servers: List<Server> = Api.gson.fromJson(serverJson, object : TypeToken<List<Server>>() {}.type)
+		val servers: List<Server> = arguments.getParcelableArrayList(LIST)
 		setupMenu()
 		setupRecyclerData(servers)
 	}
@@ -49,7 +50,9 @@ class ServerListFragment : BaseFragment() {
 		server_list_toolbar.setOnMenuItemClickListener {
 			when (it.itemId) {
 				R.id.menuLogout -> {
-					logout()
+					if (activity is MainActivity) {
+						(activity as MainActivity).logout()
+					}
 					true
 				}
 				else            -> {
@@ -61,3 +64,5 @@ class ServerListFragment : BaseFragment() {
 
 
 }
+
+

@@ -1,7 +1,8 @@
-package lt.topocentras.android.api
+package com.example.lukas.tesonettest.api
 
 import com.example.lukas.tesonettest.GlobalErrorEvent
 import com.example.lukas.tesonettest.api.ErrorResponse
+import com.example.lukas.tesonettest.util.gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -54,7 +55,7 @@ class RxErrorCallAdapter<R>(private val mDelegate: CallAdapter<R, Any>,
 	}
 
 	fun sendErrorEvent(body: String) {
-		val errorResponse = Api.gson.fromJson(body, ErrorResponse::class.java)
+		val errorResponse = gson.fromJson(body, ErrorResponse::class.java)
 		EventBus.getDefault().post(GlobalErrorEvent(errorResponse.message))
 	}
 
