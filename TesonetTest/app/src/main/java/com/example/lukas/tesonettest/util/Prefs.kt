@@ -1,7 +1,6 @@
 package com.example.lukas.tesonettest.util
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.example.lukas.tesonettest.model.Token
 
@@ -11,23 +10,20 @@ import com.example.lukas.tesonettest.model.Token
  */
 object Prefs {
 	private val AUTHORIZATION = "authorization"
-	lateinit var context: Context
 
-	val preferences: SharedPreferences by lazy {
-		PreferenceManager.getDefaultSharedPreferences(context)
+	private fun getSharedPreferences(context: Context) =
+			PreferenceManager.getDefaultSharedPreferences(context)
+
+	fun setAuthorization(context: Context, token: Token?) {
+		val json = token?.let {
+			gson.toJson(it)
+		}
+		getSharedPreferences(context).edit().putString(AUTHORIZATION, json).apply()
 	}
 
-	var authorization: Token?
-		get() {
-			preferences.getString(AUTHORIZATION, null)?.let {
-				return gson.fromJson(it, Token::class.java)
-			} ?: return null
+	fun getAuthorization(context: Context): Token? {
+		return getSharedPreferences(context).getString(AUTHORIZATION, null)?.let {
+			gson.fromJson(it, Token::class.java)
 		}
-		set(value) {
-			val json = value?.let {
-				gson.toJson(it)
-			}
-			preferences.edit().putString(AUTHORIZATION, json).apply()
-
-		}
+	}
 }

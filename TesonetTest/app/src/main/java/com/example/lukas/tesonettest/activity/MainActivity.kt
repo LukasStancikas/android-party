@@ -1,6 +1,5 @@
 package com.example.lukas.tesonettest.activity
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
-		changeFragment(LoginFragment.getInstance(),false)
+		changeFragment(LoginFragment(), false)
 	}
 
 	override fun onStart() {
@@ -46,13 +45,13 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	fun logout() {
-		Prefs.authorization = null
-		changeFragment(LoginFragment.getInstance(),false)
+		Prefs.setAuthorization(this, null)
+		changeFragment(LoginFragment(), false)
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	fun onEvent(event: UnauthorizedEvent) {
-		Prefs.authorization = null
+		Prefs.setAuthorization(this, null)
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)

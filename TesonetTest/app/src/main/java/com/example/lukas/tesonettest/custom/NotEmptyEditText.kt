@@ -31,7 +31,7 @@ class NotEmptyEditText : EditText {
 	}
 
 	private fun init(context: Context, attrs: AttributeSet?) {
-		setOnFocusChangeListener { v, hasFocus ->
+		setOnFocusChangeListener { _, hasFocus ->
 			if (!hasFocus && text.toString().isBlank()) {
 				error = context.getString(R.string.general_field_empty)
 			}

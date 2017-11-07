@@ -18,24 +18,22 @@ import java.util.concurrent.TimeUnit
 
 object Api {
 	val BASE_URL = BuildConfig.BASE_API_URL
-	lateinit var context: Context
 	private val TIMEOUT = 30L
 
 
-	val appService: AppService by lazy {
-		Api.retrofit.create(AppService::class.java)
-	}
+	fun getAppService(context: Context) =
+			Api.getRetrofit(context).create(AppService::class.java)
 
-	internal val retrofit by lazy {
+	private fun getRetrofit(context: Context): Retrofit {
 		val retrofitBuilder = Retrofit.Builder()
-		retrofitBuilder.addConverterFactory(GsonConverterFactory.create(gson))
-		retrofitBuilder.addCallAdapterFactory(RxErrorCallAdapterFactory(RxJava2CallAdapterFactory.create()))
-		retrofitBuilder.client(okClient)
-		retrofitBuilder.baseUrl(BASE_URL)
-		retrofitBuilder.build()
+				.addConverterFactory(GsonConverterFactory.create(gson))
+				.addCallAdapterFactory(RxErrorCallAdapterFactory(RxJava2CallAdapterFactory.create()))
+				.client(getOkHttp(context))
+				.baseUrl(BASE_URL)
+		return retrofitBuilder.build()
 	}
 
-	val okClient: OkHttpClient by lazy {
+	private fun getOkHttp(context: Context): OkHttpClient {
 		val okBuilder = OkHttpClient.Builder()
 
 		val httpCacheDirectory = File(context.cacheDir, "responses")
@@ -51,24 +49,23 @@ object Api {
 		loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 		okBuilder.interceptors().add(loggingInterceptor)
 
-		okBuilder.interceptors().add(getHeaderInterceptor())
+		okBuilder.interceptors().add(getHeaderInterceptor(context))
 		okBuilder.authenticator { _, _ ->
 			EventBus.getDefault().post(UnauthorizedEvent())
 			return@authenticator null
 		}
-		okBuilder.build()
+		return okBuilder.build()
 	}
 
 
-	private fun getHeaderInterceptor(): Interceptor? {
-		return Interceptor {
-			chain ->
+	private fun getHeaderInterceptor(context: Context): Interceptor? {
+		return Interceptor { chain ->
 
 			val requestBuilder = chain.request().newBuilder()
 			requestBuilder.header("Content-Type", "application/json")
 			requestBuilder.header("Accept", "application/json")
 
-			Prefs.authorization?.let {
+			Prefs.getAuthorization(context)?.let {
 				requestBuilder.addHeader("Authorization", "Bearer ${it.token}")
 			}
 

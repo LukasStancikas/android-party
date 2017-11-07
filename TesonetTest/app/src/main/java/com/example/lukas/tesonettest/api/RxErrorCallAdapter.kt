@@ -1,7 +1,6 @@
 package com.example.lukas.tesonettest.api
 
 import com.example.lukas.tesonettest.GlobalErrorEvent
-import com.example.lukas.tesonettest.api.ErrorResponse
 import com.example.lukas.tesonettest.util.gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,7 +28,9 @@ class RxErrorCallAdapter<R>(private val mDelegate: CallAdapter<R, Any>,
 					.observeOn(AndroidSchedulers.mainThread())
 					.doOnNext {
 						if (!it.isSuccessful) {
-							sendErrorEvent(it.errorBody().string())
+							it.errorBody()?.let {
+								sendErrorEvent(it.string())
+							}
 						}
 					}
 					.doOnError {
@@ -46,7 +47,9 @@ class RxErrorCallAdapter<R>(private val mDelegate: CallAdapter<R, Any>,
 					}
 					.doOnError { e ->
 						if (e is HttpException) {
-							sendErrorEvent(e.response().errorBody().string())
+							e.response().errorBody()?.let {
+								sendErrorEvent(it.string())
+							}
 						}
 					}
 					.doOnComplete {
@@ -54,7 +57,7 @@ class RxErrorCallAdapter<R>(private val mDelegate: CallAdapter<R, Any>,
 		}
 	}
 
-	fun sendErrorEvent(body: String) {
+	private fun sendErrorEvent(body: String) {
 		val errorResponse = gson.fromJson(body, ErrorResponse::class.java)
 		EventBus.getDefault().post(GlobalErrorEvent(errorResponse.message))
 	}
